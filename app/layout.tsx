@@ -1,7 +1,20 @@
+"use client";
 import "./globals.css";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Navbar from "@/components/navbar/navbar";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Footer from "@/components/footer/footer";
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +30,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ThemeRegistry>
-        <body className={inter.className}>{children}</body>
-      </ThemeRegistry>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ThemeRegistry>
+          <body className={inter.className}>
+            <Navbar />
+            {children}
+            <Footer />
+          </body>
+        </ThemeRegistry>
+      </QueryClientProvider>
     </html>
   );
 }

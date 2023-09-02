@@ -1,13 +1,13 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
+import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -17,103 +17,130 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Grid } from "@mui/material";
 import Sun from "../../images/icons/sun";
 import Moon from "../../images/icons/moon";
+import { styled } from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material/";
 
-const pages = ["Blog", "Projects", "About", "Newsletter"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { Name: "Blog", Link: "/" },
+  { Name: "Projects", Link: "#" },
+  { Name: "About", Link: "#" },
+  { Name: "Newsletter", Link: "#" },
+];
 
-function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+function Navbar() {
+  const StyledToolbar = styled(Toolbar)({
+    display: "flex",
+    justifyContent: "space-between",
+  });
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const MenuBox = styled(Box)({
+    display: "flex",
+    gap: 20,
+    mt: 20,
+  });
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const [open, SetOpen] = useState(false);
 
   return (
-    // <AppBar position="static">
-      <Toolbar>
-        <Grid container>
-          <Grid md={3} lg={4} xl={7} style={{ color: "black" }}>
+    <>
+      <StyledToolbar>
+        <Typography
+          variant="h6"
+          noWrap
+          component="a"
+          href="/"
+          sx={{
+            display: { xs: "flex", sm: "flex", md: "flex", lg: "flex" },
+            fontWeight: 700,
+            letterSpacing: ".3rem",
+            color: "inherit",
+            textDecoration: "none",
+            fontSize: { xl: "25px", lg: "25px", md: "25px", sm: "18px" },
+          }}>
+          Abdelwahab
+        </Typography>
+        <MenuBox sx={{ display: { xs: "none", sm: "flex", md: "flex" } }}>
+          {pages.map((item) => (
             <Typography
-              variant="h6"
-              noWrap
+              key={item.Name}
               component="a"
               href="/"
               sx={{
-                mr: 2,
-                mt: 1,
-                display: { xs: "none", md: "flex" },
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
+                cursor: "pointer",
+                fontSize: { lg: "15px", md: "13px", sm: "10px" },
+                display: { xs: "none", sm: "flex", md: "flex" },
+                fontWeight: 600,
+                mt: { xl: 0.8, lg: 0.8, md: 1, sm: 1.5 },
               }}>
-              Abdelwahab
+              {item.Name}
             </Typography>
-          </Grid>
+          ))}
 
-          <Grid md={9} lg={8} xl={5} style={{ height: "48px" }}>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 1,
-                    color: "black",
-                    display: "block",
-                    height: "24px",
-                  }}>
-                  {page}
-                </Button>
-              ))}
-              <Button
-                variant="text"
-                sx={{
-                  backgroundColor: "#7F56D9",
-                  color: "white",
-                  // padding: "8px 16px",
-                  ml: "10px",
-                  my: 0.7,
-                  flexGrow: 1,
-                  // width: "105px",
-                }}>
-                New Blog
-              </Button>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  alignContent: "center",
-                  alignItems: "center",
-                  // width: "120px",
-                  borderRadius: "30px",
-                  overflow: "hidden",
-                  backgroundColor: "black",
-                  padding: "5px 10px",
-                  height: "fit-content",
-                  marginLeft: "20px",
-                  marginTop: 3,
-                }}>
-                <Sun style={{ width: "10px", height: "10px", flexGrow: 1 }} />
-                <Moon style={{ width: "10px", height: "10px", flexGrow: 1 }} />
-              </div>
-            </Box>
-          </Grid>
-        </Grid>
-      </Toolbar>
-    // </AppBar>
+          <Button
+            component={Link}
+            href="/form"
+            variant="text"
+            sx={{
+              backgroundColor: "#7F56D9",
+              color: "white",
+              fontSize: { md: "12px", sm: "10px" },
+              width: "fit-content",
+            }}>
+            New Blog
+          </Button>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              alignContent: "center",
+              alignItems: "center",
+              borderRadius: "30px",
+              overflow: "hidden",
+              backgroundColor: "black",
+              padding: "5px 10px",
+              height: "fit-content",
+            }}>
+            <Sun style={{ width: "5px", height: "5px" }} />
+            <Moon style={{ width: "5px", height: "5px" }} />
+          </div>
+        </MenuBox>
+
+        <MenuIcon
+          sx={{
+            color: "black",
+            display: { xs: "block", sm: "none", md: "none" },
+          }}
+          onClick={() => SetOpen(!open)}
+        />
+      </StyledToolbar>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        open={open}
+        onClose={() => SetOpen(!open)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}>
+        <Box sx={{ width: 350, height: "25vh", scrollBehavior: "none" }}>
+          {pages.map((item) => (
+            <MenuItem
+              key={item.Name}
+              sx={{
+                cursor: "pointer",
+                fontSize: "14px",
+              }}>
+              {item.Name}
+            </MenuItem>
+          ))}
+        </Box>
+      </Menu>
+    </>
   );
 }
-export default ResponsiveAppBar;
+export default Navbar;
